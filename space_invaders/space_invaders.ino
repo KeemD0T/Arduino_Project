@@ -170,18 +170,25 @@ class Player {
     
     // getters
     int get_x() const {
+      return x;
     }
     int get_y() const {
+      return y;
     }
     int get_lives() const {
+      return lives;
     }
     
     // setter
     void set_x(int x_arg) {
+      x = x_arg; // FIXME - INPUT VALIDATION NEEDED?
     }
     
     // Modifies: lives
     void die() {
+      if (lives > 0) {
+        lives--;
+      }
     }
     
     // draws the Player
@@ -201,6 +208,8 @@ class Player {
 
     // sets private data members x and y to initial values
     void initialize(int x_arg, int y_arg) {
+      x = x_arg;
+      y = y_arg;
     }
     
     // draws the player
