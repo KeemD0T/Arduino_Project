@@ -194,15 +194,13 @@ class Player {
     // draws the Player
     // calls: draw_with_rgb
     void draw() {
-      matrix.drawPixel(x, y + 1, BLUE.to_333());
-      matrix.drawPixel(x, y, BLUE.to_333());
-      matrix.drawPixel(x - 1, y, BLUE.to_333());
-      matrix.drawPixel(x + 1, y, BLUE.to_333());
+      draw_with_rgb(BLUE);
     }
     
     // draws black where the Player used to be
     // calls: draw_with_rgb
     void erase() {
+      draw_with_rgb(BLACK);
     }
 
   private:
@@ -218,6 +216,10 @@ class Player {
     
     // draws the player
     void draw_with_rgb(Color color) {
+      matrix.drawPixel(x, y + 1, color.to_333());
+      matrix.drawPixel(x, y, color.to_333());
+      matrix.drawPixel(x - 1, y, color.to_333());
+      matrix.drawPixel(x + 1, y, color.to_333());
     }
 };
 
