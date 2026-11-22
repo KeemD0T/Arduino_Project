@@ -275,11 +275,12 @@ class Game {
       // First argument - x coordinate
       // Second argument - y coordinate
       // Third argument - Color converted to the format required by the drawPixel functiuon
-      matrix.drawPixel(31, 0, RED.to_333());
+      // matrix.drawPixel(31, 0, RED.to_333());
+      
       player.draw();
 
+      //logic for firing cannonball, moves ~1px/.5sec
       if (button_pressed) {
-        Serial.println("button pressed");
         ball.fire(player.get_x(), player.get_y());
       }
       if (ball.has_been_fired() && millis() / 500 >= time) {
