@@ -145,6 +145,7 @@ class Cannonball {
     void fire(int x_arg, int y_arg) {
       x = x_arg;
       y = y_arg;
+      fired = true;
     }
     
     // moves the Cannonball and detects if it goes off the screen
@@ -258,6 +259,7 @@ class Game {
       // FIXME TESTING (ALDEN)
       player = Player();
       player.set_x(1);
+      ball = Cannonball();
     }
     
     // sets up a new game of Space Invaders
@@ -275,6 +277,16 @@ class Game {
       // Third argument - Color converted to the format required by the drawPixel functiuon
       matrix.drawPixel(31, 0, RED.to_333());
       player.draw();
+
+      if (button_pressed) {
+        Serial.println("button pressed");
+        ball.fire(player.get_x(), player.get_y());
+      }
+      if (ball.has_been_fired()) {
+        ball.erase();
+        ball.move();
+        ball.draw();
+      }
 
     }
 
