@@ -113,6 +113,8 @@ class Invader {
     }
 };
 
+
+const int MAX_Y = 15;
 class Cannonball {
   public:
     Cannonball() {
@@ -123,35 +125,58 @@ class Cannonball {
     
     // resets private data members to initial values
     void reset() {
+      x = 0;
+      y = 0;
+      fired = false;
     }
     
     // getters
     int get_x() const {
+      return x;
     }
     int get_y() const {
+      return y;
     }
     bool has_been_fired() const {
+      return fired;
     }
     
     // sets private data members
     void fire(int x_arg, int y_arg) {
+      x = x_arg;
+      y = y_arg;
     }
     
     // moves the Cannonball and detects if it goes off the screen
     // Modifies: y, fired
     void move() {
+      // FIXME - check proper intention of modifying fired here??  also supposed to check fired while moving it? 
+      if (y > MAX_Y) {
+        fired = false;
+      }
+      
+      if (fired) {
+        y++;
+      }
+
+      // FIXME - need to redraw or does loop take care of that?
+
     }
     
     // resets private data members to initial values
     void hit() {
+      x = 0;
+      y = 0;
     }
     
     // draws the Cannonball, if it is fired
     void draw() {
+      matrix.drawPixel(x, y, YELLOW.to_333());
     }
     
     // draws black where the Cannonball used to be
     void erase() {
+      matrix.drawPixel(x, y, BLACK.to_333());
     }
 
   private:
@@ -159,6 +184,7 @@ class Cannonball {
     int y;
     bool fired;
 };
+
 
 class Player {
   public:
