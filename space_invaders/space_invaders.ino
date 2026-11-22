@@ -282,10 +282,11 @@ class Game {
         Serial.println("button pressed");
         ball.fire(player.get_x(), player.get_y());
       }
-      if (ball.has_been_fired()) {
+      if (ball.has_been_fired() && millis() / 500 >= time) {
         ball.erase();
         ball.move();
         ball.draw();
+        time++;
       }
 
     }
