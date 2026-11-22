@@ -194,6 +194,10 @@ class Player {
     // draws the Player
     // calls: draw_with_rgb
     void draw() {
+      matrix.drawPixel(x, y + 1, BLUE.to_333());
+      matrix.drawPixel(x, y, BLUE.to_333());
+      matrix.drawPixel(x - 1, y, BLUE.to_333());
+      matrix.drawPixel(x + 1, y, BLUE.to_333());
     }
     
     // draws black where the Player used to be
@@ -222,6 +226,10 @@ class Game {
     Game() {
       level = 0;
       time = 0;
+
+      // FIXME TESTING (ALDEN)
+      player = Player();
+      player.set_x(1);
     }
     
     // sets up a new game of Space Invaders
@@ -237,7 +245,9 @@ class Game {
       // First argument - x coordinate
       // Second argument - y coordinate
       // Third argument - Color converted to the format required by the drawPixel functiuon
-      matrix.drawPixel(4, 6, RED.to_333());
+      matrix.drawPixel(31, 0, RED.to_333());
+      player.draw();
+
     }
 
   private:
