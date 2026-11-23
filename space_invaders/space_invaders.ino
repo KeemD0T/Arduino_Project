@@ -280,10 +280,11 @@ class Game {
       player.draw();
 
       //logic for firing cannonball, moves ~1px/.5sec
+      const int BALL_MOVE_DELAY = 500;
       if (button_pressed) {
         ball.fire(player.get_x(), player.get_y());
       }
-      if (ball.has_been_fired() && millis() / 500 >= time) {
+      if (ball.has_been_fired() && millis() / BALL_MOVE_DELAY >= time) {
         ball.erase();
         ball.move();
         ball.draw();
