@@ -308,16 +308,35 @@ class Player {
     }
 };
 
+
+
+
+// Constants:
+const int FRAME_DELAY = 500;
+const int DEADZONE_AMOUNT = 25;
+const int AVG_POTENTIOMETER_VALUE = 500;
+const int MOVE_WEIGHT = 25;
+const int DID_NOT_HIT_INVADER = -1;
+const int INVADER_MOVE = 16;
+
+
 class Game {
   public:
     Game() {
       level = 1;
       time = 0;
 
-      // FIXME TESTING (ALDEN)
       player = Player();
       player.set_x(1);
       ball = Cannonball();
+
+      stop_time = 0;
+      frame = 1;
+
+      was_button_pressed = false;
+      move_score = 0;
+
+      enemies[NUM_ENEMIES];
     }
     
     // sets up a new game of Space Invaders
@@ -404,13 +423,12 @@ class Game {
         }
 
         if (move_score != 0) {
-          // move
-          player.set_x(move_score + player.get_x());
 
-          // print after movement
+          // moves player
           player.erase();
-          player.move();
+          player.set_x(move_score + player.get_x());
           player.draw();
+
         }
 
 
@@ -429,19 +447,19 @@ class Game {
   private:
     int level;
     unsigned long time;
-    unsigned long stop_time = 0;
-    int frame = 1;
+    unsigned long stop_time;
+    int frame;
     Player player;
     Cannonball ball;
     Invader enemies[NUM_ENEMIES];
-    const int FRAME_DELAY = 500;
-    const int DEADZONE_AMOUUNT = 25;
-    const int AVG_POTENTIOMETER_VALUE = 500;
-    const int MOVE_WEIGHT = 25;
-    const int DID_NOT_HIT_INVADER = -1;
-    const int INVADER_MOVE = 16;
-    bool was_button_pressed = false
-    int move_score = 0;
+    // const int FRAME_DELAY = 500;
+    // const int DEADZONE_AMOUUNT = 25;
+    // const int AVG_POTENTIOMETER_VALUE = 500;
+    // const int MOVE_WEIGHT = 25;
+    // const int DID_NOT_HIT_INVADER = -1;
+    // const int INVADER_MOVE = 16;
+    bool was_button_pressed;
+    int move_score;
 
     // check if Player defeated all Invaders in current level
     bool level_cleared() {
@@ -455,7 +473,7 @@ class Game {
 
     // checking if player lost the game
     bool player_lost() {
-      return lives == 0;
+      return player.get_lives() == 0;
     }
 
     // checking if player was hit
@@ -470,11 +488,11 @@ class Game {
 
     // FIX ME -- HOW TO DETECT COLLISION
     bool invader_hit_player(int index) {
-      if (enemies[i].get_strength() == 0) {
+      if (enemies[index].get_strength() == 0) {
         return false;
       }
       else {
-        return enemies[i].get_y() == player.get_y();
+        return enemies[index].get_y() == player.get_y();
       }
     }
 
@@ -490,7 +508,7 @@ class Game {
 
     // FIX ME -- HOW TO DETECT COLLISION
     bool ball_hit_invader(int index) {
-      if (enemies[i].get_strength() == 0) {
+      if (enemies[index].get_strength() == 0) {
         return false;
       }
       else {
@@ -535,56 +553,56 @@ class Game {
       if (level == 1) {
         // row 1
         for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-          enemies[i].initialize(4i,0,1);
+          enemies[i].initialize(4 * i,0,1);
         }
 
         // row 2
         for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-          enemies[i + NUM_ENEMIES / 2].initialize(4i,4,0);
+          enemies[i + NUM_ENEMIES / 2].initialize(4 * i,4,0);
         }
       }
       else if (level == 2) {
         // row 1
         for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-          enemies[i].initialize(4i,0,1 + i % 2);
+          enemies[i].initialize(4 * i,0,1 + i % 2);
         }
 
         // row 2
         for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-          enemies[i + NUM_ENEMIES / 2].initialize(4i,4,2 - i % 2);
+          enemies[i + NUM_ENEMIES / 2].initialize(4 * i,4,2 - i % 2);
         }
       }
       else if (level == 3) {
         // row 1
         for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-          enemies[i].initialize(4i,0,1 + i % 5);
+          enemies[i].initialize(4 * i,0,1 + i % 5);
         }
 
         // row 2
         for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-          enemies[i + NUM_ENEMIES / 2].initialize(4i,4,1 + (i + 3) % 5);
+          enemies[i + NUM_ENEMIES / 2].initialize(4 * i,4,1 + (i + 3) % 5);
         }
       }
       else if (level == 4) {
         // row 1
         for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-          enemies[i].initialize(4i,0,5 - i % 2);
+          enemies[i].initialize(4 * i,0,5 - i % 2);
         }
 
         // row 2
         for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-          enemies[i + NUM_ENEMIES / 2].initialize(4i,4,2 + i % 2);
+          enemies[i + NUM_ENEMIES / 2].initialize(4 * i,4,2 + i % 2);
         }
       }
       else {
         // row 1
         for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-          enemies[i].initialize(4i,0,random(1,7));
+          enemies[i].initialize(4 * i,0,random(1,7));
         }
 
         // row 2
         for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-          enemies[i + NUM_ENEMIES / 2].initialize(4i,4,random(1,7));
+          enemies[i + NUM_ENEMIES / 2].initialize(4 * i,4,random(1,7));
         }
       }
 
@@ -594,7 +612,7 @@ class Game {
       }
 
       // setting up the player
-      player.initialize(0, 14);
+      player.set_x(14);
 
       // print the player
       player.draw();
@@ -623,25 +641,25 @@ void loop() {
 
 // displays Level
 void print_level(int level) {
-  lcd.setCursor(0,0);
-  lcd.print("Level: ");
-  lcd.print(level);
+  // lcd.setCursor(0,0);
+  // lcd.print("Level: ");
+  // lcd.print(level);
   delay(1000);
-  fillScreen(BLACK);
+  // fillScreen(BLACK);
 }
 
 // displays number of lives
 void print_lives(int lives) {
-  lcd.setCursor(0,0);
-  lcd.print("Lives: ");
-  lcd.print(lives);
+  // lcd.setCursor(0,0);
+  // lcd.print("Lives: ");
+  // lcd.print(lives);
   delay(1000);
-  fillScreen(BLACK);
+  // fillScreen(BLACK);
 }
 
 // displays "game over"
 void game_over() {
-  lcd.setCursor(0,0);
-  lcd.print("Game Over");
+  // lcd.setCursor(0,0);
+  // lcd.print("Game Over");
 }
 
