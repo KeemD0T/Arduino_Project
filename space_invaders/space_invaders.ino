@@ -425,9 +425,35 @@ class Game {
         if (move_score != 0) {
 
           // moves player
+          // FIXME - REPLACE MAGIC NUMS WITH CONSTANTS
+          // FIXME - CLEAN UP DUPLICATE CODE
+          // if (player.get_x() > 0 || player.get_x() < 31) {
+          //   player.erase();
+          //   player.set_x(move_score + player.get_x());
+          //   player.draw();
+          // } else if (player.get_x() <= 0 && move_score > 0 ) {
+          //   player.erase();
+          //   player.set_x(move_score + player.get_x());
+          //   player.draw();
+          // } else if (player.get_x() >=31 && move_score < 0) {
+          //   player.erase();
+          //   player.set_x(move_score + player.get_x());
+          //   player.draw();
+          // }
+
+          // FIXME - CLEAN UP CONST LOCATIONS ETC.
+          int new_loc = player.get_x() + move_score;
+          const int MAX_X = 31;
           player.erase();
-          player.set_x(move_score + player.get_x());
+          if (new_loc >= 0 && new_loc <= MAX_X) {
+            player.set_x(new_loc);
+          } else if (new_loc < 0) {
+            player.set_x(0);
+          } else if (new_loc > MAX_X) {
+            player.set_x(MAX_X);
+          }
           player.draw();
+
 
         }
 
