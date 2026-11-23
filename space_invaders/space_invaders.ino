@@ -171,6 +171,8 @@ class Invader {
     }
 };
 
+
+const int MAX_Y = 15;
 class Cannonball {
   public:
     Cannonball() {
@@ -181,35 +183,59 @@ class Cannonball {
     
     // resets private data members to initial values
     void reset() {
+      x = 0;
+      y = 0;
+      fired = false;
     }
     
     // getters
     int get_x() const {
+      return x;
     }
     int get_y() const {
+      return y;
     }
     bool has_been_fired() const {
+      return fired;
     }
     
     // sets private data members
     void fire(int x_arg, int y_arg) {
+      x = x_arg;
+      y = y_arg;
+      fired = true;
     }
     
     // moves the Cannonball and detects if it goes off the screen
     // Modifies: y, fired
     void move() {
+      // FIXME - check proper intention of modifying fired here??  also supposed to check fired while moving it? 
+      if (y > MAX_Y) {
+        fired = false;
+      }
+      
+      if (fired) {
+        y++;
+      }
+
+      // FIXME - need to redraw or does loop take care of that?
+
     }
     
     // resets private data members to initial values
     void hit() {
+      x = 0;
+      y = 0;
     }
     
     // draws the Cannonball, if it is fired
     void draw() {
+      matrix.drawPixel(x, y, YELLOW.to_333());
     }
     
     // draws black where the Cannonball used to be
     void erase() {
+      matrix.drawPixel(x, y, BLACK.to_333());
     }
 
   private:
@@ -217,6 +243,7 @@ class Cannonball {
     int y;
     bool fired;
 };
+
 
 class Player {
   public:
@@ -228,28 +255,37 @@ class Player {
     
     // getters
     int get_x() const {
+      return x;
     }
     int get_y() const {
+      return y;
     }
     int get_lives() const {
+      return lives;
     }
     
     // setter
     void set_x(int x_arg) {
+      x = x_arg; // FIXME - INPUT VALIDATION NEEDED?
     }
     
     // Modifies: lives
     void die() {
+      if (lives > 0) {
+        lives--;
+      }
     }
     
     // draws the Player
     // calls: draw_with_rgb
     void draw() {
+      draw_with_rgb(BLUE);
     }
     
     // draws black where the Player used to be
     // calls: draw_with_rgb
     void erase() {
+      draw_with_rgb(BLACK);
     }
 
   private:
@@ -259,10 +295,16 @@ class Player {
 
     // sets private data members x and y to initial values
     void initialize(int x_arg, int y_arg) {
+      x = x_arg;
+      y = y_arg;
     }
     
     // draws the player
     void draw_with_rgb(Color color) {
+      matrix.drawPixel(x, y + 1, color.to_333());
+      matrix.drawPixel(x, y, color.to_333());
+      matrix.drawPixel(x - 1, y, color.to_333());
+      matrix.drawPixel(x + 1, y, color.to_333());
     }
 };
 
@@ -271,6 +313,11 @@ class Game {
     Game() {
       level = 1;
       time = 0;
+
+      // FIXME TESTING (ALDEN)
+      player = Player();
+      player.set_x(1);
+      ball = Cannonball();
     }
     
     // sets up a new game of Space Invaders
