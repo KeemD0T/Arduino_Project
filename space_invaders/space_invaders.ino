@@ -218,12 +218,23 @@ class Game {
     // sets up a new game of Space Invaders
     // Modifies: global variable matrix
     void setupGame() {
+      for (int i = 0; i < NUM_ENEMIES; i++) {
+        
+
+      }
+      draw()
     }
     
     // advances the game simulation one step and renders the graphics
     // see spec for details of game
     // Modifies: global variable matrix
     void update(int potentiometer_value, bool button_pressed) {
+
+      // get current time
+      time = millis();
+
+
+
       // temporary statement to test drawing a pixel to the LED display
  // First argument - x coordinate
  // Second argument - y coordinate
@@ -240,10 +251,18 @@ class Game {
 
     // check if Player defeated all Invaders in current level
     bool level_cleared() {
+      for (int i = 0; i < NUM_ENEMIES; i++) {
+        if (enemies[i].get_strength() != 0 ) {
+            return false;
+        }
+      }
+      return true;
     }
 
     // set up a level
     void reset_level() {
+      
+    
     }
 };
 
@@ -255,6 +274,7 @@ void setup() {
   Serial.begin(9600);
   pinMode(BUTTON_PIN_NUMBER, INPUT);
   matrix.begin();
+  game.setupGame();
 }
 
 // see https://www.arduino.cc/reference/en/language/structure/sketch/loop/
