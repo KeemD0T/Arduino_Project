@@ -245,11 +245,12 @@ class Cannonball {
 };
 
 
+const int PLAYER_HEIGHT = 15;
 class Player {
   public:
     Player() {
       x = 0;
-      y = 0;
+      y = PLAYER_HEIGHT;
       lives = 3;
     }
     
@@ -301,10 +302,10 @@ class Player {
     
     // draws the player
     void draw_with_rgb(Color color) {
-      matrix.drawPixel(x, y + 1, color.to_333());
+      matrix.drawPixel(x, y - 1, color.to_333());
       matrix.drawPixel(x, y, color.to_333());
-      matrix.drawPixel(x - 1, y, color.to_333());
       matrix.drawPixel(x + 1, y, color.to_333());
+      matrix.drawPixel(x - 1, y, color.to_333());
     }
 };
 
