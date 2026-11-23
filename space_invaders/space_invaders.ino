@@ -172,7 +172,6 @@ class Invader {
 };
 
 
-const int MAX_Y = 15;
 class Cannonball {
   public:
     Cannonball() {
@@ -210,12 +209,12 @@ class Cannonball {
     // Modifies: y, fired
     void move() {
       // FIXME - check proper intention of modifying fired here??  also supposed to check fired while moving it? 
-      if (y > MAX_Y) {
+      if (y < 0) {
         fired = false;
       }
       
       if (fired) {
-        y++;
+        y--;
       }
 
       // FIXME - need to redraw or does loop take care of that?
@@ -313,10 +312,10 @@ class Player {
 
 
 // Constants:
-const int FRAME_DELAY = 500;
+const int FRAME_DELAY = 100;
 const int DEADZONE_AMOUNT = 25;
 const int AVG_POTENTIOMETER_VALUE = 500;
-const int MOVE_WEIGHT = 25;
+const int MOVE_WEIGHT = 100;
 const int DID_NOT_HIT_INVADER = -1;
 const int INVADER_MOVE = 16;
 
@@ -394,7 +393,7 @@ class Game {
 
         // firing if button was pressed
         if (was_button_pressed) {
-          ball.fire(player.get_x(), player.get_y());
+          ball.fire(player.get_x(), player.get_y() - 2);
           was_button_pressed = false;
         }
 
