@@ -315,7 +315,7 @@ class Player {
 // Constants:
 const int FRAME_DELAY = 100;
 const int DID_NOT_HIT_INVADER = -1;
-const int INVADER_MOVE = 32;
+const int INVADER_MOVE = 45;
 const int WIDTH = 32;
 const int MAX_X = 31;
 
@@ -559,7 +559,7 @@ class Game {
     void reset_level() {
       print_level(level);
       print_lives(player.get_lives());
-
+      ball.reset();
       // setting up the invaders
       if (level == 1) {
         // row 1
