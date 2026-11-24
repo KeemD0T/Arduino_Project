@@ -182,6 +182,7 @@ class Cannonball {
     
     // resets private data members to initial values
     void reset() {
+      erase();
       x = 0;
       y = 0;
       fired = false;
@@ -393,6 +394,7 @@ class Game {
 
         // firing if button was pressed
         if (was_button_pressed) {
+          ball.reset();
           ball.fire(player.get_x(), player.get_y() - 2);
           was_button_pressed = false;
         }
@@ -406,8 +408,11 @@ class Game {
 
         // hit invader
         if (invader_got_hit() != DID_NOT_HIT_INVADER) {
+
           enemies[invader_got_hit()].hit();
+          ball.reset();
           enemies[invader_got_hit()].draw();
+
         }
 
         player.erase();
@@ -476,7 +481,7 @@ class Game {
         return false;
       }
       else {
-        return enemies[index].get_y() == 11;
+        return enemies[index].get_y() == 10;
       }
     }
 
