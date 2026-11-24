@@ -502,7 +502,17 @@ class Game {
         return false;
       }
       else {
-        return enemies[index].get_y() == 10;
+        if (enemies[index].get_y() == 12) {
+          return true;
+        }
+        else if ((enemies[index].get_y() == 11) 
+                && ((player.get_x() == enemies[index].get_x()) 
+                || (player.get_x() == enemies[index].get_x() + 3))) {
+          return true;
+        }
+        else {
+          return false;
+        }
       }
     }
 
