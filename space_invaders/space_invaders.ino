@@ -334,6 +334,7 @@ class Game {
       frame = 1;
 
       was_button_pressed = false;
+      was_button_pressed_last = false;
       move_score = 0;
       ball_active = false;
 
@@ -367,6 +368,9 @@ class Game {
       // updating was_button_pressed
       if (button_pressed) {
         was_button_pressed = true;
+        was_button_pressed_last = true;
+      } else {
+        was_button_pressed_last = false;
       }
 
       // updating the frame
@@ -395,12 +399,15 @@ class Game {
           
 
         // firing if button was pressed
-        if (was_button_pressed) {
+        if (was_button_pressed && !was_button_pressed_last) {
           was_button_pressed = false;
+          was_button_pressed_last = true;
           if (!ball_active) {
             ball.fire(player.get_x(), player.get_y() - 2);
             ball_active = true;
           }
+        } else {
+          was_button_pressed_last = false;
         }
 
         // first check if hit invader
@@ -477,6 +484,7 @@ class Game {
     int move_score;
     bool ball_active;
     int last_pot_val;
+    bool was_button_pressed_last;
 
     // check if Player defeated all Invaders in current level
     bool level_cleared() {
