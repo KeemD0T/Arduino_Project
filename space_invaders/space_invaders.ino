@@ -334,6 +334,7 @@ class Game {
 
       was_button_pressed = false;
       move_score = 0;
+      ball_active = false;
 
       enemies[NUM_ENEMIES];
     }
@@ -394,28 +395,42 @@ class Game {
 
         // firing if button was pressed
         if (was_button_pressed) {
-          ball.reset();
-          ball.fire(player.get_x(), player.get_y() - 2);
           was_button_pressed = false;
+          if (!ball_active) {
+            ball.fire(player.get_x(), player.get_y() - 2);
+            ball_active = true;
+          }
         }
 
-        // updating the ball
-        if (ball.has_been_fired()) {
+        // first check if hit invader
+        if (invader_got_hit() != DID_NOT_HIT_INVADER) {
+          int target = invader_got_hit();
+          enemies[target].hit();
+          ball_active = false;
+          ball.reset();
+          enemies[target].draw();
+        }
+
+        if (ball.get_y() == 0) {
+          ball_active = false;
+          ball.reset();
+        }
+
+         // updating the ball
+        if (ball.has_been_fired() && ball_active) {
           ball.erase();
           ball.move();
           ball.draw();
         }
 
-        // hit invader
+         // second check if hit invader
         if (invader_got_hit() != DID_NOT_HIT_INVADER) {
           int target = invader_got_hit();
           enemies[target].hit();
+          ball_active = false;
           ball.reset();
           enemies[target].draw();
-
         }
-
-        player.erase();
 
         int new_loc = potentiometer_value / 32;
         player.erase();
@@ -449,6 +464,7 @@ class Game {
     Invader enemies[NUM_ENEMIES];
     bool was_button_pressed;
     int move_score;
+    bool ball_active;
 
     // check if Player defeated all Invaders in current level
     bool level_cleared() {
@@ -681,7 +697,5 @@ void game_over() {
   matrix.setTextColor(WHITE.to_333());
   matrix.setTextSize(1);
   matrix.print("Game Over");
-  delay(5000);
-  matrix.fillScreen(BLACK.to_333());
 }
 
