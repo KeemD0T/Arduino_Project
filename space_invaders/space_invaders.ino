@@ -209,7 +209,6 @@ class Cannonball {
     // moves the Cannonball and detects if it goes off the screen
     // Modifies: y, fired
     void move() {
-      // FIXME - check proper intention of modifying fired here??  also supposed to check fired while moving it? 
       if (y < 0) {
         fired = false;
       }
@@ -217,8 +216,6 @@ class Cannonball {
       if (fired) {
         y--;
       }
-
-      // FIXME - need to redraw or does loop take care of that?
 
     }
     
@@ -267,7 +264,7 @@ class Player {
     
     // setter
     void set_x(int x_arg) {
-      x = x_arg; // FIXME - INPUT VALIDATION NEEDED?
+      x = x_arg;
     }
     
     // Modifies: lives
