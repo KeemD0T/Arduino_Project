@@ -315,12 +315,14 @@ const int DID_NOT_HIT_INVADER = -1;
 const int INVADER_MOVE = 45;
 const int WIDTH = 32;
 const int MAX_X = 31;
+const int JITTER_DEADZONE = 5;
 
 class Game {
   public:
     Game() {
       level = 1;
       time = 0;
+      last_pot_val = -1;
 
       player = Player();
       player.set_x(1);
@@ -429,16 +431,21 @@ class Game {
           enemies[target].draw();
         }
 
-        int new_loc = potentiometer_value / 32;
-        player.erase();
-        if (new_loc >= 0 && new_loc <= MAX_X) {
-          player.set_x(new_loc);
-        } else if (new_loc < 0) {
-          player.set_x(0);
-        } else if (new_loc > MAX_X) {
-          player.set_x(MAX_X);
+        // update player position and jitter control
+        
+        if (abs(potentiometer_value - last_pot_val) > JITTER_DEADZONE) {
+          int new_loc = potentiometer_value / WIDTH;
+          player.erase();
+          if (new_loc >= 0 && new_loc <= MAX_X) {
+            player.set_x(new_loc);
+          } else if (new_loc < 0) {
+            player.set_x(0);
+          } else if (new_loc > MAX_X) {
+            player.set_x(MAX_X);
+          }
+          player.draw();
         }
-        player.draw();
+
 
         // invaders move
         if (frame % INVADER_MOVE == 0) {
@@ -462,6 +469,7 @@ class Game {
     bool was_button_pressed;
     int move_score;
     bool ball_active;
+    int last_pot_val;
 
     // check if Player defeated all Invaders in current level
     bool level_cleared() {
