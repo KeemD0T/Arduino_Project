@@ -422,13 +422,18 @@ class Game {
           ball.draw();
         }
 
-         // second check if hit invader
+        // second check if hit invader
         if (invader_got_hit() != DID_NOT_HIT_INVADER) {
           int target = invader_got_hit();
           enemies[target].hit();
           ball_active = false;
           ball.reset();
           enemies[target].draw();
+        }
+
+        if (ball.get_y() == 0) {
+          ball_active = false;
+          ball.reset();
         }
 
         // update player position and jitter control
