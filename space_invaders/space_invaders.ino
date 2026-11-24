@@ -317,7 +317,7 @@ const int DEADZONE_AMOUNT = 5;
 const int AVG_POTENTIOMETER_VALUE = 500;
 const int MOVE_WEIGHT = 100;
 const int DID_NOT_HIT_INVADER = -1;
-const int INVADER_MOVE = 16;
+const int INVADER_MOVE = 8;
 
 
 class Game {
@@ -368,7 +368,7 @@ class Game {
 
       // updating the frame
       if (time >= stop_time + FRAME_DELAY) {
-        stop_time += FRAME_DELAY;
+        stop_time = time;
         frame++;
 
 
@@ -506,7 +506,7 @@ class Game {
       return false;
     }
 
-    // FIX ME -- HOW TO DETECT COLLISION
+    // checking if invader hit player
     bool invader_hit_player(int index) {
       if (enemies[index].get_strength() == 0) {
         return false;
@@ -526,7 +526,7 @@ class Game {
       return DID_NOT_HIT_INVADER;
     }
 
-    // FIX ME -- HOW TO DETECT COLLISION
+    // checking if ball hit invader
     bool ball_hit_invader(int index) {
       if (enemies[index].get_strength() == 0) {
         return false;
@@ -554,7 +554,7 @@ class Game {
           return true;
         }
 
-        return false;;
+        return false;
       }
     }
 
@@ -683,25 +683,34 @@ void loop() {
 
 // displays Level
 void print_level(int level) {
-  // lcd.setCursor(0,0);
-  // lcd.print("Level: ");
-  // lcd.print(level);
-  delay(1000);
-  // fillScreen(BLACK);
+  matrix.setCursor(0,0);
+  matrix.fillScreen(BLACK.to_333());
+  matrix.setTextColor(WHITE.to_333());
+  matrix.setTextSize(1);
+  matrix.print("Level ");
+  delay(3000);
+  matrix.fillScreen(BLACK.to_333());
 }
 
 // displays number of lives
 void print_lives(int lives) {
-  // lcd.setCursor(0,0);
-  // lcd.print("Lives: ");
-  // lcd.print(lives);
-  delay(1000);
-  // fillScreen(BLACK);
+  matrix.setCursor(0,0);
+  matrix.fillScreen(BLACK.to_333());
+  matrix.setTextColor(WHITE.to_333());
+  matrix.setTextSize(1);
+  matrix.print("Lives ");
+  delay(3000);
+  matrix.fillScreen(BLACK.to_333());
 }
 
 // displays "game over"
 void game_over() {
-  // lcd.setCursor(0,0);
-  // lcd.print("Game Over");
+  matrix.setCursor(0,0);
+  matrix.fillScreen(BLACK.to_333());
+  matrix.setTextColor(WHITE.to_333());
+  matrix.setTextSize(1);
+  matrix.print("Game Over");
+  delay(5000);
+  matrix.fillScreen(BLACK.to_333());
 }
 
