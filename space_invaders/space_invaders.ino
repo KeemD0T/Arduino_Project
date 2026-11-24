@@ -512,7 +512,7 @@ class Game {
         return false;
       }
       else {
-      
+        return enemies[index].get_y() == 11;
       }
     }
 
