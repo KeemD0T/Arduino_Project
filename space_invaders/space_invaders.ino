@@ -317,7 +317,7 @@ const int DID_NOT_HIT_INVADER = -1;
 const int INVADER_MOVE = 45;
 const int WIDTH = 32;
 const int MAX_X = 31;
-const int JITTER_DEADZONE = 10;
+const int JITTER_DEADZONE = 16;
 
 class Game {
   public:
@@ -368,10 +368,10 @@ class Game {
       // updating was_button_pressed
       if (button_pressed) {
         was_button_pressed = true;
-        was_button_pressed_last = true;
-      } else {
-        was_button_pressed_last = false;
       }
+      // } else {
+      //   was_button_pressed_last = false;
+      // }
 
       // updating the frame
       if (time >= stop_time + FRAME_DELAY) {
@@ -399,14 +399,15 @@ class Game {
           
 
         // firing if button was pressed
-        if (was_button_pressed && !was_button_pressed_last) {
-          was_button_pressed = false;
-          was_button_pressed_last = true;
-          if (!ball_active) {
+        if (was_button_pressed) {
+          if (!ball_active && !was_button_pressed_last) {
             ball.fire(player.get_x(), player.get_y() - 2);
             ball_active = true;
           }
-        } else {
+          was_button_pressed = false;
+          was_button_pressed_last = true;
+        }
+        else {
           was_button_pressed_last = false;
         }
 
