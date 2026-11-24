@@ -228,11 +228,13 @@ class Cannonball {
     // draws the Cannonball, if it is fired
     void draw() {
       matrix.drawPixel(x, y, YELLOW.to_333());
+      matrix.drawPixel(x, y + 1, YELLOW.to_333());
     }
     
     // draws black where the Cannonball used to be
     void erase() {
       matrix.drawPixel(x, y, BLACK.to_333());
+      matrix.drawPixel(x, y + 1, BLACK.to_333());
     }
 
   private:
