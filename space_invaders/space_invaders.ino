@@ -639,12 +639,12 @@ class Game {
       else {
         // row 1
         for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-          enemies[i].initialize(4 * i,0,random(1,7));
+          enemies[i].initialize(4 * i,0,random(1,8));
         }
 
         // row 2
         for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-          enemies[i + NUM_ENEMIES / 2].initialize(4 * i,4,random(1,7));
+          enemies[i + NUM_ENEMIES / 2].initialize(4 * i,4,random(1,8));
         }
       }
 
