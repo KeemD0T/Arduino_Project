@@ -408,10 +408,10 @@ class Game {
 
         // hit invader
         if (invader_got_hit() != DID_NOT_HIT_INVADER) {
-
-          enemies[invader_got_hit()].hit();
+          int target = invader_got_hit();
+          enemies[target].hit();
           ball.reset();
-          enemies[invader_got_hit()].draw();
+          enemies[target].draw();
 
         }
 
