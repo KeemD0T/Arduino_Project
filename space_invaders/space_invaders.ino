@@ -313,12 +313,10 @@ class Player {
 
 // Constants:
 const int FRAME_DELAY = 100;
-const int DEADZONE_AMOUNT = 5;
-const int AVG_POTENTIOMETER_VALUE = 500;
-const int MOVE_WEIGHT = 100;
 const int DID_NOT_HIT_INVADER = -1;
-const int INVADER_MOVE = 8;
-
+const int INVADER_MOVE = 32;
+const int WIDTH = 32;
+const int MAX_X = 31;
 
 class Game {
   public:
@@ -353,6 +351,8 @@ class Game {
 
     }
     
+
+
     // advances the game simulation one step and renders the graphics
     // see spec for details of game
     // Modifies: global variable matrix
@@ -407,57 +407,21 @@ class Game {
         // hit invader
         if (invader_got_hit() != DID_NOT_HIT_INVADER) {
           enemies[invader_got_hit()].hit();
+          enemies[invader_got_hit()].draw();
         }
 
+        player.erase();
 
-
-        // assigning a move score
-        if (potentiometer_value - AVG_POTENTIOMETER_VALUE > DEADZONE_AMOUNT) {
-          move_score = (potentiometer_value - AVG_POTENTIOMETER_VALUE - DEADZONE_AMOUNT) / MOVE_WEIGHT;
+        int new_loc = potentiometer_value / 32;
+        player.erase();
+        if (new_loc >= 0 && new_loc <= MAX_X) {
+          player.set_x(new_loc);
+        } else if (new_loc < 0) {
+          player.set_x(0);
+        } else if (new_loc > MAX_X) {
+          player.set_x(MAX_X);
         }
-        else if (potentiometer_value - AVG_POTENTIOMETER_VALUE < -DEADZONE_AMOUNT) {
-          move_score = (potentiometer_value - AVG_POTENTIOMETER_VALUE + DEADZONE_AMOUNT) / MOVE_WEIGHT;
-        }
-        else {
-          move_score = 0;
-        }
-
-        if (move_score != 0) {
-
-          // moves player
-          // FIXME - REPLACE MAGIC NUMS WITH CONSTANTS
-          // FIXME - CLEAN UP DUPLICATE CODE
-          // if (player.get_x() > 0 || player.get_x() < 31) {
-          //   player.erase();
-          //   player.set_x(move_score + player.get_x());
-          //   player.draw();
-          // } else if (player.get_x() <= 0 && move_score > 0 ) {
-          //   player.erase();
-          //   player.set_x(move_score + player.get_x());
-          //   player.draw();
-          // } else if (player.get_x() >=31 && move_score < 0) {
-          //   player.erase();
-          //   player.set_x(move_score + player.get_x());
-          //   player.draw();
-          // }
-
-          // FIXME - CLEAN UP CONST LOCATIONS ETC.
-          int new_loc = player.get_x() + move_score;
-          const int MAX_X = 31;
-          player.erase();
-          if (new_loc >= 0 && new_loc <= MAX_X) {
-            player.set_x(new_loc);
-          } else if (new_loc < 0) {
-            player.set_x(0);
-          } else if (new_loc > MAX_X) {
-            player.set_x(MAX_X);
-          }
-          player.draw();
-
-
-        }
-
-
+        player.draw();
 
         // invaders move
         if (frame % INVADER_MOVE == 0) {
@@ -687,7 +651,8 @@ void print_level(int level) {
   matrix.fillScreen(BLACK.to_333());
   matrix.setTextColor(WHITE.to_333());
   matrix.setTextSize(1);
-  matrix.print("Level ");
+  matrix.print("Level");
+  matrix.print(level);
   delay(3000);
   matrix.fillScreen(BLACK.to_333());
 }
@@ -698,7 +663,8 @@ void print_lives(int lives) {
   matrix.fillScreen(BLACK.to_333());
   matrix.setTextColor(WHITE.to_333());
   matrix.setTextSize(1);
-  matrix.print("Lives ");
+  matrix.print("Lives");
+  matrix.print(lives);
   delay(3000);
   matrix.fillScreen(BLACK.to_333());
 }
