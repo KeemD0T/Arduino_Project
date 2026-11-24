@@ -183,9 +183,9 @@ class Cannonball {
     // resets private data members to initial values
     void reset() {
       erase();
+      fired = false;
       x = 0;
       y = 0;
-      fired = false;
     }
     
     // getters
