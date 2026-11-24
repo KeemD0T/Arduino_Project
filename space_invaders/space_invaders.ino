@@ -313,7 +313,7 @@ class Player {
 
 // Constants:
 const int FRAME_DELAY = 100;
-const int DEADZONE_AMOUNT = 25;
+const int DEADZONE_AMOUNT = 5;
 const int AVG_POTENTIOMETER_VALUE = 500;
 const int MOVE_WEIGHT = 100;
 const int DID_NOT_HIT_INVADER = -1;
@@ -478,12 +478,6 @@ class Game {
     Player player;
     Cannonball ball;
     Invader enemies[NUM_ENEMIES];
-    // const int FRAME_DELAY = 500;
-    // const int DEADZONE_AMOUUNT = 25;
-    // const int AVG_POTENTIOMETER_VALUE = 500;
-    // const int MOVE_WEIGHT = 25;
-    // const int DID_NOT_HIT_INVADER = -1;
-    // const int INVADER_MOVE = 16;
     bool was_button_pressed;
     int move_score;
 
@@ -518,7 +512,7 @@ class Game {
         return false;
       }
       else {
-        return enemies[index].get_y() == player.get_y();
+      
       }
     }
 
@@ -538,7 +532,29 @@ class Game {
         return false;
       }
       else {
-        return (enemies[index].get_y() == ball.get_y()) && (enemies[index].get_x() == ball.get_x());
+        int invader_x = enemies[index].get_x();
+        int invader_y = enemies[index].get_y();
+
+        int ball_x = ball.get_x();
+        int ball_y = ball.get_y();
+
+        if ((invader_x == ball_x) && (invader_y + 3 == ball_y)) {
+          return true;
+        }
+
+        if ((invader_x + 1 == ball_x) && (invader_y + 2 == ball_y)) {
+          return true;
+        }
+
+        if ((invader_x + 2 == ball_x) && (invader_y + 2 == ball_y)) {
+          return true;
+        }
+
+        if ((invader_x + 3 == ball_x) && (invader_y + 3 == ball_y)) {
+          return true;
+        }
+
+        return false;;
       }
     }
 
