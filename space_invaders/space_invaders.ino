@@ -315,7 +315,7 @@ const int DID_NOT_HIT_INVADER = -1;
 const int INVADER_MOVE = 45;
 const int WIDTH = 32;
 const int MAX_X = 31;
-const int JITTER_DEADZONE = 5;
+const int JITTER_DEADZONE = 10;
 
 class Game {
   public:
